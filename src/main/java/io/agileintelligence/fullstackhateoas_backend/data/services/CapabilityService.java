@@ -50,5 +50,22 @@ public class CapabilityService {
 
     }
 
+    public Capability updateCapability(Long id, Capability capability){
+        return capabilityRepository.findById(id)
+                .map(
+                        cap->{
+                            cap.setTechStack(capability.getTechStack());
+                            cap.setNumOfDevelopers(capability.getNumOfDevelopers());
+                            cap.setNumOfAvailableDevelopers(capability.getNumOfAvailableDevelopers());
+                            return capabilityRepository.save(cap);
+                        }).orElseGet(() ->  {
+                            return capabilityRepository.save(capability);
+                });
+    }
+
+    public void deleteCapability(Long id){
+        capabilityRepository.delete(capabilityRepository.findById(id)
+            .orElseThrow(() -> new CapabilityException("Capability with ID: " + id + " Not Found")));
+    }
 
 }
